@@ -3,8 +3,7 @@ version: '3.7'
 services:
 
   web:
-    build: .
-    image: web
+    image: discovervlad/rq-test:0.0.1
     container_name: web
     ports:
       - '5004:5000'
@@ -19,8 +18,7 @@ services:
       - redis
 
   worker:
-    build: .
-    image: worker
+    image: discovervlad/rq-worker:0.0.1
     command: python manage_worker.py run_worker
     volumes:
       - .:/usr/src/app
@@ -35,8 +33,7 @@ services:
     image: redis:5.0.3-alpine
 
   dashboard:
-    build: ./project/dashboard
-    image: dashboard
+    image: discovervlad/rq-dashboard:0.0.1
     container_name: dashboard
     ports:
       - '9181:9181'
