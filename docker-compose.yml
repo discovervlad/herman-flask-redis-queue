@@ -14,21 +14,25 @@ services:
     environment:
       - FLASK_DEBUG=1
       - APP_SETTINGS=project.server.config.DevelopmentConfig
+      - REDIS_URL=redis://redis:6379/0
     depends_on:
       - redis
 
   worker:
-    image: web
-    command: python manage.py run_worker
+    build: .
+    image: worker
+    command: python manage_worker.py run_worker
     volumes:
       - .:/usr/src/app
     environment:
+      - FLASK_DEBUG=1
       - APP_SETTINGS=project.server.config.DevelopmentConfig
+      - REDIS_URL=redis://redis:6379/0
     depends_on:
       - redis
 
   redis:
-    image: redis:4.0.11-alpine
+    image: redis:5.0.3-alpine
 
   dashboard:
     build: ./project/dashboard
@@ -36,4 +40,5 @@ services:
     container_name: dashboard
     ports:
       - '9181:9181'
-    command: rq-dashboard -H redis
+    environment:
+      - REDIS_URL=redis://redis:6379/0
