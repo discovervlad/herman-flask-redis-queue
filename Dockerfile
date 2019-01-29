@@ -1,5 +1,5 @@
 # base image
-FROM python:3.7.0-alpine
+FROM tiangolo/uwsgi-nginx:python3.6
 
 ARG REDIS_URL=redis://redis:6379/0
 ENV REDIS_URL=${REDIS_URL}
